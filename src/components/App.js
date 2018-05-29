@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 //import logo from './logo.svg';
 import './App.css';
+import ZipForm from './ZipForm';
+import get from 'axios'
+import WeatherList from './WeatherList';
 
 class App extends Component {
   constructor(props) {
@@ -13,12 +16,28 @@ class App extends Component {
     };
     this.url = "http://api.openweathermap.org/data/2.5/forecast/daily?zip=";
     this.apikey = "&units=imperial&appid=c59493e7a8643f49446baf0d5ed9d646";
+
+    this.onFormSubmit = this.onFormSubmit.bind(this);
+  }
+
+  onFormSubmit(zipcode) {
+    get (this.url + zipcode + this.apikey)
+    .then ( ({data}) => {
+      const {city, list: dates } = data;
+      this.setState({zipcode, city, dates, selectedDate: null});
+    })
+    .catch(error => {
+      alert(error);
+    });
+
+    //this.setState( {zipcode} ); //or {zipcode: zipcode}
   }
 
   render() {
     return (
       <div className="App">
-        This is my weather app
+        <ZipForm onSubmit={this.onFormSubmit} />
+        <WeatherList days={this.state.dates}  />
       </div>
     );
   }
