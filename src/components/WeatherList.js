@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import WeatherListItem from './WeatherListItem';
 
 class WeatherList extends Component {
-    constructor(props) {
-        super(props);
-       
-    }
 
     render () {
         const { days } = this.props;
@@ -15,7 +11,9 @@ class WeatherList extends Component {
                     <WeatherListItem
                     key={day.dt}
                     day={day}
-                    index={index} />
+                    index={index} 
+                    onDayClick={this.props.onDayClick}
+                    />
                 )};
             </div>
         );
